@@ -21,6 +21,7 @@ let Selectable = React.createClass({
             `selected slot: \n\nstart ${slotInfo.start.toLocaleString()} ` +
             `\nend: ${slotInfo.end.toLocaleString()}`
           )}
+          componentProps={{month:{cell: (date)=> (date.getDay()==0 ? {style: {backgroundColor:'#eee'}} : null)}}}
         />
       </div>
     )

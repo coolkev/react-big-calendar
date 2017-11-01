@@ -15,6 +15,7 @@ class BackgroundCells extends React.Component {
   static propTypes = {
     date: PropTypes.instanceOf(Date),
     cellWrapperComponent: elementType,
+    cellProps: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     container: PropTypes.func,
     selectable: PropTypes.oneOf([true, false, 'ignoreEvents']),
     longPressThreshold: PropTypes.number,
@@ -56,26 +57,29 @@ class BackgroundCells extends React.Component {
   }
 
   render(){
-    let { range, cellWrapperComponent: Wrapper, date: currentDate } = this.props;
+    let { range, cellWrapperComponent: Wrapper, date: currentDate, cellProps  } = this.props;
     let { selecting, startIdx, endIdx } = this.state;
 
     return (
       <div className='rbc-row-bg'>
         {range.map((date, index) => {
-          let selected =  selecting && index >= startIdx && index <= endIdx;
+          let selected = selecting && index >= startIdx && index <= endIdx;
+          
+          const actualCellProps = (cellProps && typeof (cellProps) === 'function' ? cellProps(date) : cellProps) || {};
           return (
             <Wrapper
               key={index}
               value={date}
               range={range}
             >
-              <div
-                style={segStyle(1, range.length)}
+              <div {...actualCellProps}
+                style={{ ...actualCellProps.style, ...segStyle(1, range.length) }}
                 className={cn(
                   'rbc-day-bg',
                   selected && 'rbc-selected-cell',
                   dates.isToday(date) && 'rbc-today',
                   currentDate && dates.month(currentDate) !== dates.month(date) && 'rbc-off-range-bg',
+                  actualCellProps.className
                 )}
               />
             </Wrapper>

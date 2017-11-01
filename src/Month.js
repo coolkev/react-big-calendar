@@ -68,6 +68,11 @@ let propTypes = {
 
   messages: PropTypes.object,
   components: PropTypes.object.isRequired,
+  componentProps: PropTypes.shape({
+      header: PropTypes.object,
+      event: PropTypes.object,
+      cell: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+  }),
   popupOffset: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.shape({
@@ -155,6 +160,7 @@ class MonthView extends React.Component {
     let {
       events,
       components,
+      componentProps,
       selectable,
       titleAccessor,
       startAccessor,
@@ -202,6 +208,7 @@ class MonthView extends React.Component {
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapper={components.dateCellWrapper}
         longPressThreshold={longPressThreshold}
+        cellProps={componentProps.cell}
       />
     )
   }

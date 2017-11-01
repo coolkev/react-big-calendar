@@ -513,7 +513,8 @@ class Calendar extends React.Component {
       month: PropTypes.shape({
         header: elementType,
         dateHeader: elementType,
-        event: elementType
+        event: elementType,
+        cell: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
       })
     }),
 
@@ -594,6 +595,7 @@ class Calendar extends React.Component {
        view, toolbar, events
       , culture
       , components = {}
+      , componentProps = {}
       , formats = {}
       , messages = {}
       , style
@@ -618,6 +620,7 @@ class Calendar extends React.Component {
       }
     )
 
+    let viewComponentProps = componentProps[view] || {};
     let CalToolbar = components.toolbar || Toolbar
     const label = View.title(current, { formats, culture })
 
@@ -650,6 +653,7 @@ class Calendar extends React.Component {
           events={events}
           date={current}
           components={viewComponents}
+          componentProps={viewComponentProps}
           getDrilldownView={this.getDrilldownView}
           onNavigate={this.handleNavigate}
           onDrillDown={this.handleDrillDown}
